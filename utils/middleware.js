@@ -1,12 +1,12 @@
-const logger = require('./logger');
+const logger = require('./logger')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
 const requestLogger = (request, response, next) => {
-    request.method === 'POST' 
-        ? logger.info(request.method, response.statusCode, request.path, request.body)
-        : logger.info(request.method, response.statusCode, request.path)
-    next()
+  request.method === 'POST'
+    ? logger.info(request.method, response.statusCode, request.path, request.body)
+    : logger.info(request.method, response.statusCode, request.path)
+  next()
 }
 
 const unknownEndpoint = (request, response) => {
@@ -39,7 +39,7 @@ const errorHandler = (error, request, response, next) => {
 const tokenExtractor = (req, res, next) => {
   const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-      req.token = authorization.substring(7)
+    req.token = authorization.substring(7)
   }
   next()
 }
@@ -52,11 +52,11 @@ const userExtractor = async (req, res, next) => {
   req.user = await User.findById(decodedToken.id)
   next()
 }
-  
-  module.exports = {
-    requestLogger,
-    unknownEndpoint,
-    errorHandler,
-    tokenExtractor,
-    userExtractor
-  }
+
+module.exports = {
+  requestLogger,
+  unknownEndpoint,
+  errorHandler,
+  tokenExtractor,
+  userExtractor
+}
